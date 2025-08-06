@@ -1,3 +1,7 @@
+import React, { useState } from 'react';
+import api from '../api';
+
+
 export default function SendMessageForm({ waId, onNew }) {
   const [body, setBody] = useState('');
 
@@ -9,7 +13,7 @@ export default function SendMessageForm({ waId, onNew }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-2 border-top d-flex">
+    <form onSubmit={handleSubmit} className="d-flex p-2 border-top">
       <input
         className="form-control flex-grow-1"
         value={body}
