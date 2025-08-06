@@ -20,12 +20,12 @@ export default function ChatWindow() {
   const addMessage = msg => setMessages(prev => [...prev, msg]);
 
   return (
-    <div className="flex flex-col h-full">
-      <header className="p-4 border-b">
+   <div className="d-flex flex-column h-100">
++      <header className="p-4 border-bottom">
         <div className="font-bold">{userInfo.name}</div>
-        <div className="text-sm text-gray-500">{userInfo.waId}</div>
+        <div className="small text-muted">{userInfo.waId}</div>
       </header>
-      <div className="flex-1 p-4 overflow-auto">
+      <div className="flex-grow-1 p-4 overflow-auto">
         {messages.map(m => <MessageBubble key={m.msgId} message={m} />)}
       </div>
       <SendMessageForm waId={waId} onNew={addMessage} />

@@ -5,18 +5,19 @@ import ChatWindow from './components/ChatWindow';
 
 function App() {
   return (
-    <Router>
-      <div className="h-screen flex">
-        <aside className="w-1/3 border-r">
+    <Router>                            {/* ← opening tag */}
+      <div className="d-flex vh-100">
+        <aside className="col-4 border-end">
           <ChatList />
         </aside>
-        <main className="flex-1">
+
+        <main className="flex-fill">
           <Routes>
             <Route path="/chat/:waId" element={<ChatWindow />} />
           </Routes>
         </main>
       </div>
-    </Router>
+    </Router>                           
   );
 }
 

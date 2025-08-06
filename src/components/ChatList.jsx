@@ -17,14 +17,22 @@ export default function ChatList() {
     });
   }, []);
 
-  return (
-    <div className="p-4">
-      {Object.entries(conversations).map(([waId, msgs]) => (
-        <Link key={waId} to={`/chat/${waId}`} className="block p-2 hover:bg-gray-100">
-          <div className="font-semibold">{msgs[0].from}</div>
-          <div className="text-sm text-gray-600">{waId}</div>
-        </Link>
-      ))}
+ 
+    return (
+   <div className="p-4">
+      <ul className="list-group">
+        {Object.entries(conversations).map(([waId, msgs]) => (
+          <Link
+            key={waId}
+            to={`/chat/${waId}`}
+            className="list-group-item list-group-item-action"
+          >
+            <div className="fw-semibold">{msgs[0].from}</div>
+            <div className="small text-muted">{waId}</div>
+          </Link>
+        ))}
+      </ul>
     </div>
   );
-}
+ }
+

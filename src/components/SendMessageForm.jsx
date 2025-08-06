@@ -9,14 +9,14 @@ export default function SendMessageForm({ waId, onNew }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-2 border-t flex">
+    <form onSubmit={handleSubmit} className="p-2 border-top d-flex">
       <input
-        className="flex-1 p-2 border rounded-lg"
+        className="form-control flex-grow-1"
         value={body}
         onChange={e => setBody(e.target.value)}
         placeholder="Type a message..."
       />
-      <button type="submit" className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg">
+      <button ttype="submit" className="btn btn-primary ms-2">
         Send
       </button>
     </form>
