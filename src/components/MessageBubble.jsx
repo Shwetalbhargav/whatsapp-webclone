@@ -1,4 +1,6 @@
 import React from 'react';
+import api from '../api';
+
 export default function MessageBubble({ message }) {
   const isOutbound = message.from !== message.waId;
   const align = isOutbound ? 'justify-content-end' : 'justify-content-start';

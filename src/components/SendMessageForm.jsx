@@ -20,7 +20,7 @@ export default function SendMessageForm({ waId, onNew }) {
         onChange={e => setBody(e.target.value)}
         placeholder="Type a message..."
       />
-      <button ttype="submit" className="btn btn-primary ms-2">
+      <button type="submit" className="btn btn-primary ms-2">
         Send
       </button>
     </form>
