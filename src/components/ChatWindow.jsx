@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import api from '../api';
 import MessageBubble from './MessageBubble';
 import SendMessageForm from './SendMessageForm';
+import { ArrowLeft, Video, Phone, Search, MoreVertical } from 'lucide-react';
 
 export default function ChatWindow() {
   const { waId } = useParams();
@@ -21,13 +22,47 @@ export default function ChatWindow() {
 
   return (
    <div className="d-flex flex-column h-100">
-+      <header className="p-4 border-bottom">
-        <div className="font-bold">{userInfo.name}</div>
-        <div className="small text-muted">{userInfo.waId}</div>
-      </header>
-      <div className="flex-grow-1 p-4 overflow-auto">
-        {messages.map(m => <MessageBubble key={m.msgId} message={m} />)}
+      {/* Header */}
+      <div className="d-flex align-items-center justify-content-between p-3 border-bottom">
+        <div className="d-flex align-items-center">
+          <button className="btn btn-sm btn-light me-2">
+            <ArrowLeft size={20} />
+          </button>
+          <img
+            src={`https://ui-avatars.com/api/?name=${userInfo.name}`}
+            alt="avatar"
+            className="rounded-circle me-2"
+            style={{ width: 40, height: 40 }}
+          />
+          <div>
+            <div className="fw-semibold">{userInfo.name}</div>
+            <div className="small text-muted">last seen today at 11:13 am</div>
+          </div>
+        </div>
+        <div className="d-flex align-items-center">
+          <button className="btn btn-sm btn-light me-2">
+            <Video size={20} />
+          </button>
+          <button className="btn btn-sm btn-light me-2">
+            <Phone size={20} />
+          </button>
+          <button className="btn btn-sm btn-light me-2">
+            <Search size={20} />
+          </button>
+          <button className="btn btn-sm btn-light">
+            <MoreVertical size={20} />
+          </button>
+        </div>
       </div>
+
+      {/* Messages */}
+      <div className="flex-grow-1 p-3 overflow-auto">
+        {messages.map(m => (
+          <MessageBubble key={m.msgId} message={m} />
+        ))}
+      </div>
+
+      {/* Input */}
       <SendMessageForm waId={waId} onNew={addMessage} />
     </div>
   );
