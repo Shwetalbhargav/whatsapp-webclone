@@ -1,29 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import api from '../api';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   IoAddCircleOutline,
   IoEllipsisVertical
 } from 'react-icons/io5';
+import useConversations from '../hooks/useConversations';
+
+const formatTime = ts =>
+  new Date(ts).toLocaleTimeString(undefined, {
+    hour: 'numeric',
+    minute: '2-digit'
+  });
 
 export default function ChatList() {
-  const [conversations, setConversations] = useState({});
+  const { conversations, loading, error } = useConversations();
+  const [filter, setFilter] = useState('All');
 
-  useEffect(() => {
-    api.get('/messages').then(res => {
-      // group by waId
-      const groups = res.data.reduce((acc, msg) => {
-        acc[msg.waId] = acc[msg.waId] || [];
-        acc[msg.waId].push(msg);
-        return acc;
-      }, {});
-      setConversations(groups);
-    });
-  }, []);
+  const filtered = conversations.filter(conv => {
+    if (filter === 'Unread')     return conv.unreadCount > 0;
+    if (filter === 'Favourites') return conv.isFavourite;
+    if (filter === 'Groups')     return conv.isGroup;
+    return true;
+  });
 
- 
-    return (
-   <div className="d-flex flex-column h-100 border-end">
+  if (loading) return <div className="p-3">Loading chats…</div>;
+  if (error)   return <div className="p-3 text-danger">Failed to load chats</div>;
+
+  return (
+    <div className="d-flex flex-column h-100 border-end">
       {/* Top bar */}
       <div className="d-flex align-items-center justify-content-between p-2 border-bottom">
         <h5 className="mb-0">WhatsApp</h5>
@@ -48,36 +52,50 @@ export default function ChatList() {
 
       {/* Tabs */}
       <div className="px-2 mb-2">
-        {['All','Unread','Favourites','Groups'].map(tab => (
+        {['All', 'Unread', 'Favourites', 'Groups'].map(tab => (
           <button
             key={tab}
-            className="btn btn-sm btn-outline-secondary me-1"
+            className={`btn btn-sm me-1 ${
+              filter === tab ? 'btn-primary' : 'btn-outline-secondary'
+            }`}
+            onClick={() => setFilter(tab)}
           >
             {tab}
           </button>
         ))}
       </div>
 
-      {/* List */}
+      {/* Conversation List */}
       <div className="flex-grow-1 overflow-auto">
         <ul className="list-group list-group-flush">
-          {Object.entries(conversations).map(([waId, msgs]) => (
+          {filtered.map(conv => (
             <Link
-              key={waId}
-              to={`/chat/${waId}`}
+              key={conv.waId}
+              to={`/chat/${conv.waId}`}
               className="list-group-item list-group-item-action d-flex align-items-center"
             >
               <div className="flex-grow-1">
-                <div className="fw-semibold">{msgs[0].from}</div>
-                <div className="small text-muted">{waId}</div>
+                <div className="fw-semibold">
+                  {conv.name || conv.number}
+                </div>
+                <div className="small text-muted">
+                  {conv.lastMessage.snippet}
+                </div>
               </div>
-              {/* placeholder for unread badge */}
-              <span className="badge bg-success rounded-pill">2</span>
+              <div className="text-end">
+                <div className="small text-muted">
+                  {formatTime(conv.lastMessage.timestamp)}
+                </div>
+                {conv.unreadCount > 0 && (
+                  <span className="badge bg-success rounded-pill">
+                    {conv.unreadCount}
+                  </span>
+                )}
+              </div>
             </Link>
           ))}
         </ul>
       </div>
     </div>
   );
- }
-
+}

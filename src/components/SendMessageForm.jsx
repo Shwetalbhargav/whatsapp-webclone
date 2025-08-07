@@ -7,19 +7,18 @@ import {
 } from 'react-icons/io5';
 
 export default function SendMessageForm({ waId, onNew }) {
-  const [body, setBody] = useState('');
+  const [input, setInput] = useState('');
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (!body.trim()) return;
-    const res = await api.post('/messages', {
-      from: 'DemoUser',
-      to: waId,
-      body,
-      type: 'text'
-    });
-    onNew(res.data);
-    setBody('');
+    if (!input.trim()) return;
+
+    api.post('/messages', { waId, text: input })
+      .then(res => {
+        onNew(res.data);
+        setInput('');
+      })
+      .catch(console.error);
   };
 
   return (
@@ -33,12 +32,12 @@ export default function SendMessageForm({ waId, onNew }) {
       <input
         type="text"
         className="form-control flex-grow-1"
-        value={body}
-        onChange={e => setBody(e.target.value)}
+        value={input}
+        onChange={e => setInput(e.target.value)}
         placeholder="Type a message"
       />
       <button
-        type={body.trim() ? 'submit' : 'button'}
+        type={input.trim() ? 'submit' : 'button'}
         className="btn btn-sm btn-light ms-2"
       >
         <IoMicOutline size={18} />

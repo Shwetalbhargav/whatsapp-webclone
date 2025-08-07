@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import api from '../api';
+import useMessages from '../hooks/useMessages';
 import MessageBubble from './MessageBubble';
 import SendMessageForm from './SendMessageForm';
 import {
@@ -13,20 +13,16 @@ import {
 
 export default function ChatWindow() {
   const { waId } = useParams();
-  const [messages, setMessages] = useState([]);
-  const [userInfo, setUserInfo] = useState({ name: '', waId });
+  const { messages, setMessages, loading, error } = useMessages(waId);
 
-  useEffect(() => {
-    api.get('/messages').then(res => {
-      const filtered = res.data.filter(m => m.waId === waId);
-      setMessages(filtered.reverse()); // so oldest shows first
-      if (filtered.length) {
-        setUserInfo({ name: filtered[0].from, waId });
-      }
-    });
-  }, [waId]);
+  // derive the user’s name from the first message
+  const userName = messages.length ? messages[0].from : '';
 
+  // callback for when SendMessageForm posts a new message
   const addMessage = msg => setMessages(prev => [...prev, msg]);
+
+  if (loading) return <div className="p-3">Loading messages…</div>;
+  if (error)   return <div className="p-3 text-danger">Failed to load messages</div>;
 
   return (
     <div className="d-flex flex-column h-100">
@@ -37,14 +33,16 @@ export default function ChatWindow() {
             <IoArrowBackOutline size={20} />
           </button>
           <img
-            src={`https://ui-avatars.com/api/?name=${userInfo.name}`}
+            src={`https://ui-avatars.com/api/?name=${userName}`}
             alt="avatar"
             className="rounded-circle me-2"
             style={{ width: 40, height: 40 }}
           />
           <div>
-            <div className="fw-semibold">{userInfo.name}</div>
-            <div className="small text-muted">last seen today at 11:13 am</div>
+            <div className="fw-semibold">{userName}</div>
+            <div className="small text-muted">
+              last seen today at 11:13 am
+            </div>
           </div>
         </div>
         <div className="d-flex align-items-center">
