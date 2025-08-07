@@ -1,4 +1,3 @@
-// Sidebar.jsx
 import React from 'react';
 import {
   IoChatbubbleOutline,
@@ -6,13 +5,7 @@ import {
   IoCallOutline,
   IoPeopleOutline,
   IoSettingsOutline,
-  IoAddCircleOutline,
-  IoHappyOutline,
-  IoMicOutline,
-  IoVideocamOutline,
-  IoChevronDownOutline,
-  IoSearchOutline,
-  IoEllipsisVertical
+  
 } from 'react-icons/io5';
 import { FaCircleNotch } from 'react-icons/fa';
 
@@ -43,7 +36,7 @@ export default function Sidebar() {
         <IoCallOutline size={24} />
       </div>
 
-      {/* Communities/Groups */}
+      {/* Groups */}
       <div className="p-2">
         <IoPeopleOutline size={24} />
       </div>
@@ -60,7 +53,7 @@ export default function Sidebar() {
         <IoSettingsOutline size={24} />
       </div>
 
-      {/* User avatar */}
+      {/* Avatar */}
       <div className="p-2">
         <img
           src="https://ui-avatars.com/api/?name=DemoUser&background=ddd"
@@ -70,5 +63,5 @@ export default function Sidebar() {
         />
       </div>
     </div>
-  );
+);
 }

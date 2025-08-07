@@ -19,15 +19,17 @@ export default function ChatWindow() {
   useEffect(() => {
     api.get('/messages').then(res => {
       const filtered = res.data.filter(m => m.waId === waId);
-      setMessages(filtered.reverse()); // oldest first
-      if (filtered.length) setUserInfo({ name: filtered[0].from, waId });
+      setMessages(filtered.reverse()); // so oldest shows first
+      if (filtered.length) {
+        setUserInfo({ name: filtered[0].from, waId });
+      }
     });
   }, [waId]);
 
   const addMessage = msg => setMessages(prev => [...prev, msg]);
 
   return (
-   <div className="d-flex flex-column h-100">
+    <div className="d-flex flex-column h-100">
       {/* Header */}
       <div className="d-flex align-items-center justify-content-between p-3 border-bottom">
         <div className="d-flex align-items-center">

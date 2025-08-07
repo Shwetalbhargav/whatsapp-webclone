@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
 import api from '../api';
-import { IoAttachOutline, IoHappyOutline, IoMicOutline } from 'react-icons/io5';
-
+import {
+  IoAttachOutline,
+  IoHappyOutline,
+  IoMicOutline
+} from 'react-icons/io5';
 
 export default function SendMessageForm({ waId, onNew }) {
   const [body, setBody] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const res = await api.post('/messages', { from: 'DemoUser', to: waId, body, type: 'text' });
+    if (!body.trim()) return;
+    const res = await api.post('/messages', {
+      from: 'DemoUser',
+      to: waId,
+      body,
+      type: 'text'
+    });
     onNew(res.data);
     setBody('');
   };
@@ -22,19 +31,18 @@ export default function SendMessageForm({ waId, onNew }) {
         <IoHappyOutline size={18} />
       </button>
       <input
+        type="text"
         className="form-control flex-grow-1"
         value={body}
         onChange={e => setBody(e.target.value)}
         placeholder="Type a message"
       />
-      
-        <button
-       type={body.trim() ? 'submit' : 'button'}
+      <button
+        type={body.trim() ? 'submit' : 'button'}
         className="btn btn-sm btn-light ms-2"
       >
         <IoMicOutline size={18} />
       </button>
-
     </form>
   );
 }

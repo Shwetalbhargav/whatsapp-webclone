@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 import { Link } from 'react-router-dom';
-import { MessageSquarePlus, MoreVertical } from 'lucide-react';
+import {
+  IoAddCircleOutline,
+  IoEllipsisVertical
+} from 'react-icons/io5';
 
 export default function ChatList() {
   const [conversations, setConversations] = useState({});
@@ -26,10 +29,10 @@ export default function ChatList() {
         <h5 className="mb-0">WhatsApp</h5>
         <div className="d-flex align-items-center">
           <button className="btn btn-sm btn-light me-2">
-            <MessageSquarePlus size={18} />
+            <IoAddCircleOutline size={18} />
           </button>
           <button className="btn btn-sm btn-light">
-            <MoreVertical size={18} />
+            <IoEllipsisVertical size={18} />
           </button>
         </div>
       </div>
