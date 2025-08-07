@@ -3,7 +3,13 @@ import { useParams } from 'react-router-dom';
 import api from '../api';
 import MessageBubble from './MessageBubble';
 import SendMessageForm from './SendMessageForm';
-import { ArrowLeft, Video, Phone, Search, MoreVertical } from 'lucide-react';
+import {
+  IoArrowBackOutline,
+  IoVideocamOutline,
+  IoCallOutline,
+  IoSearchOutline,
+  IoEllipsisVertical
+} from 'react-icons/io5';
 
 export default function ChatWindow() {
   const { waId } = useParams();
@@ -26,7 +32,7 @@ export default function ChatWindow() {
       <div className="d-flex align-items-center justify-content-between p-3 border-bottom">
         <div className="d-flex align-items-center">
           <button className="btn btn-sm btn-light me-2">
-            <ArrowLeft size={20} />
+            <IoArrowBackOutline size={20} />
           </button>
           <img
             src={`https://ui-avatars.com/api/?name=${userInfo.name}`}
@@ -41,16 +47,16 @@ export default function ChatWindow() {
         </div>
         <div className="d-flex align-items-center">
           <button className="btn btn-sm btn-light me-2">
-            <Video size={20} />
+            <IoVideocamOutline size={20} />
           </button>
           <button className="btn btn-sm btn-light me-2">
-            <Phone size={20} />
+            <IoCallOutline size={20} />
           </button>
           <button className="btn btn-sm btn-light me-2">
-            <Search size={20} />
+            <IoSearchOutline size={20} />
           </button>
           <button className="btn btn-sm btn-light">
-            <MoreVertical size={20} />
+            <IoEllipsisVertical size={20} />
           </button>
         </div>
       </div>

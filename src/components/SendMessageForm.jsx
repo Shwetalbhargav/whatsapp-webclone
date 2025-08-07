@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import api from '../api';
-import { Paperclip, Smile, Mic } from 'lucide-react';
+import { IoAttachOutline, IoHappyOutline, IoMicOutline } from 'react-icons/io5';
 
 
 export default function SendMessageForm({ waId, onNew }) {
@@ -16,10 +16,10 @@ export default function SendMessageForm({ waId, onNew }) {
   return (
     <form onSubmit={handleSubmit} className="d-flex align-items-center p-2 border-top">
       <button type="button" className="btn btn-sm btn-light me-2">
-        <Paperclip size={18} />
+        <IoAttachOutline size={18} />
       </button>
       <button type="button" className="btn btn-sm btn-light me-2">
-        <Smile size={18} />
+        <IoHappyOutline size={18} />
       </button>
       <input
         className="form-control flex-grow-1"
@@ -27,15 +27,14 @@ export default function SendMessageForm({ waId, onNew }) {
         onChange={e => setBody(e.target.value)}
         placeholder="Type a message"
       />
-      {body ? (
-        <button type="submit" className="btn btn-primary ms-2">
-          Send
-        </button>
-      ) : (
-        <button type="button" className="btn btn-sm btn-light ms-2">
-          <Mic size={18} />
-        </button>
-      )}
+      
+        <button
+       type={body.trim() ? 'submit' : 'button'}
+        className="btn btn-sm btn-light ms-2"
+      >
+        <IoMicOutline size={18} />
+      </button>
+
     </form>
   );
 }
