@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../api';
+import useSendMessage from '../hooks/useSendMessage';
 import {
   IoAttachOutline,
   IoHappyOutline,
@@ -8,18 +8,20 @@ import {
 
 export default function SendMessageForm({ waId, onNew }) {
   const [input, setInput] = useState('');
+  const { send, sending, error } = useSendMessage(waId, { onSuccess: onNew });
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (!input.trim()) return;
 
-    api.post('/messages', { waId, text: input })
-      .then(res => {
-        onNew(res.data);
-        setInput('');
-      })
-      .catch(console.error);
-  };
+  const handleSubmit = async (e) => {
+   e.preventDefault();
+   if (!input.trim()) return;
+   try {
+     const saved = await send(input);   
+     onNew?.(saved);
+     setInput('');
+   } catch (err) {
+     console.error(err);
+   }
+ };
 
   return (
     <form onSubmit={handleSubmit} className="d-flex align-items-center p-2 border-top">

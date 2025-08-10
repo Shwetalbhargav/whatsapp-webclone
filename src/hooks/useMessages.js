@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+// src/hooks/useMessages.js
+import { useState, useEffect, useCallback } from 'react';
 import api from '../api';
 
 export default function useMessages(waId) {
@@ -6,15 +7,24 @@ export default function useMessages(waId) {
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState(null);
 
-  useEffect(() => {
+  const fetchMessages = useCallback(async (signal) => {
     if (!waId) return;
-    setLoading(true);
-
-    api.get(`/messages/waId/${waId}`)
-      .then(res => setMessages(res.data))
-      .catch(err => setError(err))
-      .finally(() => setLoading(false));
+    try {
+      setLoading(true);
+      const res = await api.get(`/messages/waId/${waId}`, { signal });
+      setMessages(Array.isArray(res.data) ? res.data : []);
+    } catch (e) {
+      if (e.name !== 'CanceledError' && e.code !== 'ERR_CANCELED') setError(e);
+    } finally {
+      setLoading(false);
+    }
   }, [waId]);
 
-  return { messages, setMessages, loading, error };
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchMessages(controller.signal);
+    return () => controller.abort();
+  }, [fetchMessages]);
+
+  return { messages, setMessages, loading, error, refetch: fetchMessages };
 }
