@@ -11,8 +11,16 @@ export default function useMessages(waId) {
     if (!waId) return;
     try {
       setLoading(true);
+      //const res = await api.get(`/messages/waId/${waId}`, { signal });
+      //setMessages(Array.isArray(res.data) ? res.data : []);
       const res = await api.get(`/messages/waId/${waId}`, { signal });
-      setMessages(Array.isArray(res.data) ? res.data : []);
+      const d = res.data;
+      const list = Array.isArray(d) ? d
+        : Array.isArray(d?.messages) ? d.messages
+        : Array.isArray(d?.data) ? d.data
+        : [];
+      setMessages(list);
+        
     } catch (e) {
       if (e.name !== 'CanceledError' && e.code !== 'ERR_CANCELED') setError(e);
     } finally {
